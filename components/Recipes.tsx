@@ -9,15 +9,18 @@ export default async function Recipes() {
   );
 
   try {
-    const response = await fetch(process.env.API_HOST + 'recipes', {
+    const response = await fetch(process.env.API_HOST + 'api/recipes', {
       method: 'GET',
       headers: headers,
     });
-
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) {
+      console.log(`Error: ${response.statusText} ${response.status}`);
+      throw new Error(`HTTP ${response.status}, ${response.statusText}`);
+    }
 
     const data = await response.json();
-    const recipes = data._embedded.recipes;
+    // console.log(data);
+    const recipes = data;
 
     return (
       <div
@@ -26,13 +29,14 @@ export default async function Recipes() {
       >
         {recipes.map((recipe: Recipe) => (
           <RecipeCard
-            key={recipe._links.self.href.split('/').pop()}
+            key={recipe.id}
             recipe={recipe}
           />
         ))}
       </div>
     );
   } catch (error) {
+    console.log(error);
     return <div>Error loading recipes</div>;
   }
 }
