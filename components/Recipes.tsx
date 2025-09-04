@@ -9,7 +9,7 @@ export default async function Recipes() {
   );
 
   try {
-    const response = await fetch(process.env.API_HOST + 'recipes', {
+    const response = await fetch(process.env.API_HOST + 'api/recipes', {
       method: 'GET',
       headers: headers,
     });
@@ -19,7 +19,8 @@ export default async function Recipes() {
     }
 
     const data = await response.json();
-    const recipes = data._embedded.recipes;
+    // console.log(data);
+    const recipes = data;
 
     return (
       <div
@@ -28,7 +29,7 @@ export default async function Recipes() {
       >
         {recipes.map((recipe: Recipe) => (
           <RecipeCard
-            key={recipe._links.self.href.split('/').pop()}
+            key={recipe.id}
             recipe={recipe}
           />
         ))}
