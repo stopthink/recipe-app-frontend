@@ -13,8 +13,10 @@ export default async function Recipes() {
       method: 'GET',
       headers: headers,
     });
-
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) {
+      console.log(`Error: ${response.statusText} ${response.status}`);
+      throw new Error(`HTTP ${response.status}, ${response.statusText}`);
+    }
 
     const data = await response.json();
     const recipes = data._embedded.recipes;
@@ -33,6 +35,7 @@ export default async function Recipes() {
       </div>
     );
   } catch (error) {
+    console.log(error);
     return <div>Error loading recipes</div>;
   }
 }
