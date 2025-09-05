@@ -35,7 +35,7 @@ export default function Recipe({ recipe }: { recipe: Recipe }) {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <b>Ingredients</b>
+          {recipe.ingredients.length > 0 && <b>Ingredients</b>}
           <ul>
             {recipe.ingredients.map((ingredient: Ingredient) => (
               <li key={ingredient.id}>
