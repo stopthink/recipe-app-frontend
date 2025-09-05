@@ -5,7 +5,7 @@ export interface Recipe {
   recipeUrl: string;
   createdAt: string;
   user: User;
-  ingredients: Ingredient;
+  ingredients: Ingredients;
 }
 
 export interface Ingredient {
@@ -16,9 +16,9 @@ export interface Ingredient {
   orderIndex: number;
 }
 
-type Ingredients = Ingredient[];
+export type Ingredients = Ingredient[];
 
-type Recipes = Recipe[];
+export type Recipes = Recipe[];
 
 export interface User {
   id: number;
