@@ -1,5 +1,5 @@
-import RecipeCard from '@/components/Recipe';
-import type { Recipe } from '@/lib/types/recipes';
+import RecipeCard from '@/components/RecipeCard';
+import type { Recipe, Recipes } from '@/lib/types/recipes';
 
 export default async function Recipes() {
   const headers = new Headers();
@@ -14,13 +14,10 @@ export default async function Recipes() {
       headers: headers,
     });
     if (!response.ok) {
-      console.log(`Error: ${response.statusText} ${response.status}`);
       throw new Error(`HTTP ${response.status}, ${response.statusText}`);
     }
 
-    const data = await response.json();
-    // console.log(data);
-    const recipes = data;
+    const recipes: Recipes = await response.json();
 
     return (
       <div
