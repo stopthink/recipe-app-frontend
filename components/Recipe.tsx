@@ -28,9 +28,7 @@ export default function Recipe({ recipe }: { recipe: Recipe }) {
             <Link href={recipe.recipeUrl}>Watch Video</Link>
           </Button>
           <Button asChild className="w-full">
-            <Link href={`recipes/${recipe._links.self.href.split('/').pop()}`}>
-              View Recipe
-            </Link>
+            <Link href={`recipes/${recipe.id}`}>View Recipe</Link>
           </Button>
         </CardFooter>
       </Card>

@@ -1,5 +1,5 @@
 import RecipeCard from '@/components/Recipe';
-import type { Recipe, RecipesResponse } from '@/lib/types/recipes';
+import type { Recipe } from '@/lib/types/recipes';
 
 export default async function Recipes() {
   const headers = new Headers();
@@ -28,10 +28,7 @@ export default async function Recipes() {
   gap-6"
       >
         {recipes.map((recipe: Recipe) => (
-          <RecipeCard
-            key={recipe.id}
-            recipe={recipe}
-          />
+          <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
       </div>
     );
