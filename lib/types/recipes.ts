@@ -1,20 +1,27 @@
-// Individual recipe
 export interface Recipe {
+  id: number;
   name: string;
   description: string;
   recipeUrl: string;
   createdAt: string;
-  _links: {
-    self: { href: string };
-    recipe: { href: string };
-    ingredients: { href: string };
-    user: { href: string };
-  };
+  user: User;
+  ingredients: Ingredient;
 }
 
-// API response wrapper
-export interface RecipesResponse {
-  _embedded: {
-    recipes: Recipe[];
-  };
+export interface Ingredient {
+  id: number;
+  name: string;
+  quantity: number;
+  unit: string;
+  orderIndex: number;
+}
+
+type Ingredients = Ingredient[];
+
+type Recipes = Recipe[];
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
 }
