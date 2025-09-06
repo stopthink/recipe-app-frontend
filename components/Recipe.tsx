@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { Ingredient, Recipe } from '@/lib/types/recipes';
+import type { Recipe } from '@/lib/types/recipes';
 import {
   Card,
   CardHeader,
@@ -39,7 +39,7 @@ export default async function Recipe({ id }: { id: number }) {
         <CardContent>
           {recipe.ingredients.length > 0 && <b>Ingredients</b>}
           <ul>
-            {recipe.ingredients.map((ingredient: Ingredient) => (
+            {recipe.ingredients.map((ingredient) => (
               <li key={ingredient.id}>
                 <Checkbox /> {ingredient.name}
               </li>
@@ -47,9 +47,11 @@ export default async function Recipe({ id }: { id: number }) {
           </ul>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button asChild variant="outline" className="w-full">
-            <Link href={recipe.recipeUrl}>Watch Video</Link>
-          </Button>
+          {recipe.recipeUrl && (
+            <Button asChild variant="outline" className="w-full">
+              <Link href={recipe.recipeUrl}>Watch Video</Link>
+            </Button>
+          )}
           <Button asChild className="w-full bg-red-400 hover:bg-red-300">
             <Link href={`recipes/${recipe.id}`}>
               <ListChecks /> Send to Todoist

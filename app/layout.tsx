@@ -1,6 +1,9 @@
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { Button } from '@/components/ui/button';
+import { CirclePlus } from 'lucide-react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,8 +32,16 @@ export default function RootLayout({
       >
         <div className="min-h-screen bg-background">
           <header className="border-b">
-            <div className="container mx-auto px-4 py-4">
-              <h1 className="text-2xl font-bold">Recipe App</h1>
+            <div className="flex container justify-between mx-auto px-4 py-4">
+              <h1 className="text-2xl font-bold">
+                <Link href="/">Recipe App</Link>
+              </h1>
+              <Button asChild>
+                <Link href="/recipes/new">
+                  <CirclePlus />
+                  Add Recipe
+                </Link>
+              </Button>
             </div>
           </header>
 
