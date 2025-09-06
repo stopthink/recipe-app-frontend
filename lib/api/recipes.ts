@@ -25,3 +25,22 @@ export async function fetchRecipes() {
     throw error;
   }
 }
+
+export async function fetchRecipe(id: number) {
+  const headers = getAuthHeaders();
+
+  try {
+    const response = await fetch(process.env.API_HOST + 'api/recipes/' + id, {
+      method: 'GET',
+      headers: headers,
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}, ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.log('Failed to fetch recipe', error);
+    throw error;
+  }
+}

@@ -17,8 +17,10 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Star, ListChecks } from 'lucide-react';
+import { fetchRecipe } from '@/lib/api/recipes';
 
-export default function Recipe({ recipe }: { recipe: Recipe }) {
+export default async function Recipe({ id }: { id: number }) {
+  const recipe: Recipe = await fetchRecipe(id);
   return (
     <div>
       <Card className="w-2xl">
