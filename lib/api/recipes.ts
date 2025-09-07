@@ -70,3 +70,22 @@ export async function addRecipe(recipe: CreateRecipe) {
     throw error;
   }
 }
+
+export async function fetchIngredients() {
+  const headers = getAuthHeaders();
+
+  try {
+    const response = await fetch(process.env.API_HOST + 'api/ingredients', {
+      method: 'GET',
+      headers: headers,
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}, ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.log('Failed to fetch recipe', error);
+    throw error;
+  }
+}

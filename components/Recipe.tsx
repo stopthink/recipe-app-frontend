@@ -49,7 +49,7 @@ export default async function Recipe({ id }: { id: number }) {
         <CardFooter className="flex-col gap-2">
           {recipe.recipeUrl && (
             <Button asChild variant="outline" className="w-full">
-              <Link href={recipe.recipeUrl}>Watch Video</Link>
+              <Link href={recipe.recipeUrl}>View Recipe</Link>
             </Button>
           )}
           <Button asChild className="w-full bg-red-400 hover:bg-red-300">

@@ -13,6 +13,7 @@ export async function createRecipe(formData: FormData) {
       user: { id: 1 },
       name: formData.get('name') as string,
       description: formData.get('description') as string,
+      recipeUrl: formData.get('recipeUrl') as string,
       ingredients: [
         { orderIndex: 1, unit: 'lb', quantity: 1, name: 'chicken' },
         { orderIndex: 2, unit: 'oz', quantity: 4, name: 'butter' },
