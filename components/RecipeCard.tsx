@@ -11,18 +11,16 @@ import { Button } from '@/components/ui/button';
 
 export default function Recipe({ recipe }: { recipe: Recipe }) {
   return (
-    <div>
-      <Card className="w-full max-w-sm">
+    <Link href={`recipes/${recipe.id}`}>
+      <Card className="gap-4 flex flex-col w-2xl w-full h-full max-w-sm hover:bg-stone-50">
         <CardHeader>
           <CardTitle>{recipe.name}</CardTitle>
           <CardDescription>{recipe.description}</CardDescription>
         </CardHeader>
-        <CardFooter className="flex-col gap-2">
-          <Button asChild className="w-full">
-            <Link href={`recipes/${recipe.id}`}>View Recipe</Link>
-          </Button>
+        <CardFooter className="flex-col gap-2 mt-auto">
+          <Button className="w-full cursor-pointer">View Recipe</Button>
         </CardFooter>
       </Card>
-    </div>
+    </Link>
   );
 }
