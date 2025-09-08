@@ -2,22 +2,20 @@
 
 import { redirect } from 'next/navigation';
 import { addRecipe } from '@/lib/api/recipes';
+import { CreateRecipe, Ingredients } from '@/lib/types/recipes';
 
 export async function createRecipe(formData: FormData) {
   try {
-    // inject user and ingredients until we get proper auth
     // TODO: attach user session to data in createRecipe()
-    // TODO: attach ingredients to data in createRecipe()
 
-    const recipe = {
+    const recipe: CreateRecipe = {
       user: { id: 1 },
       name: formData.get('name') as string,
       description: formData.get('description') as string,
       recipeUrl: formData.get('recipeUrl') as string,
-      ingredients: [
-        { orderIndex: 1, unit: 'lb', quantity: 1, name: 'chicken' },
-        { orderIndex: 2, unit: 'oz', quantity: 4, name: 'butter' },
-      ],
+      ingredients: JSON.parse(
+        (formData.get('ingredients') as string) || '[]'
+      ) as Ingredients,
     };
 
     const newRecipe = await addRecipe(recipe);

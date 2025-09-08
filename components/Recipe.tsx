@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/tooltip';
 import { Star, ListChecks } from 'lucide-react';
 import { fetchRecipe } from '@/lib/api/recipes';
+import { Badge } from '@/components/ui/badge';
 
 export default async function Recipe({ id }: { id: number }) {
   const recipe: Recipe = await fetchRecipe(id);
@@ -40,8 +41,16 @@ export default async function Recipe({ id }: { id: number }) {
           {recipe.ingredients.length > 0 && <b>Ingredients</b>}
           <ul>
             {recipe.ingredients.map((ingredient) => (
-              <li key={ingredient.id}>
-                <Checkbox /> {ingredient.name}
+              <li
+                key={ingredient.id}
+                className="flex w-full justify-between py-1"
+              >
+                <span>
+                  <Checkbox /> {ingredient.name}{' '}
+                </span>
+                <Badge className="bg-stone-200 text-stone-900">
+                  {ingredient.quantity} {ingredient.unit}
+                </Badge>
               </li>
             ))}
           </ul>
