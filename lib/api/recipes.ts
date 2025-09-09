@@ -1,4 +1,4 @@
-import { CreateRecipe } from '@/lib/types/recipes';
+import { CreateRecipe, Ingredients } from '@/lib/types/recipes';
 
 // TODO: add success message/info to return from these fucntions
 
@@ -83,9 +83,17 @@ export async function fetchIngredients() {
       throw new Error(`HTTP ${response.status}, ${response.statusText}`);
     }
 
-    return await response.json();
+    return dedupeIngredients(await response.json());
   } catch (error) {
     console.log('Failed to fetch recipe', error);
     throw error;
   }
+}
+
+function dedupeIngredients(ingredients: Ingredients) {
+  return Array.from(
+    new Map(
+      ingredients.map((ingredient) => [ingredient.name, ingredient])
+    ).values()
+  );
 }

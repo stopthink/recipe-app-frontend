@@ -15,33 +15,13 @@ import {
 } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { ChevronsUpDown, Plus, X } from 'lucide-react';
-import { Ingredients, CreateIngredient } from '@/lib/types/recipes';
+import { Ingredients, CreateIngredient, Ingredient } from '@/lib/types/recipes';
 
 interface IngredientsProps {
   existingIngredients: Ingredients;
 }
-
-const UNIT_OPTIONS = [
-  'cups',
-  'tbsp',
-  'tsp',
-  'oz',
-  'lbs',
-  'g',
-  'kg',
-  'ml',
-  'l',
-  'each',
-];
 
 export default function IngredientSelector({
   existingIngredients,
@@ -50,13 +30,22 @@ export default function IngredientSelector({
   const [searchValue, setSearchValue] = useState('');
   const [ingredients, setIngredients] = useState<CreateIngredient[]>([]);
 
-  const addIngredient = (name: string) => {
-    const newIngredient: CreateIngredient = {
-      name: name.trim(),
+  const addIngredient = (ingredient: Ingredient | string) => {
+    let newIngredient: CreateIngredient = {
+      name: '',
       quantity: 1,
-      unit: 'cups',
+      unit: '',
       orderIndex: 1,
     };
+    if (typeof ingredient == 'string') {
+      // search suggestion wasn't found in existing ingredients, use search string.
+      newIngredient.name = ingredient;
+    } else {
+      // search was found in existing ingredients, use the object
+      newIngredient.name = ingredient.name.trim();
+      newIngredient.quantity = ingredient.quantity;
+      newIngredient.unit = ingredient.unit;
+    }
     setIngredients([...ingredients, newIngredient]);
     setOpen(false);
     setSearchValue('');
@@ -127,7 +116,7 @@ export default function IngredientSelector({
                     {filteredIngredients.map((ingredient) => (
                       <CommandItem
                         key={ingredient.id}
-                        onSelect={() => addIngredient(ingredient.name)}
+                        onSelect={() => addIngredient(ingredient)}
                         className="cursor-pointer"
                       >
                         {ingredient.name}
@@ -182,7 +171,6 @@ export default function IngredientSelector({
                 {/* Quantity */}
                 <div className="w-20">
                   <Input
-                    value={ingredient.quantity}
                     onChange={(e) =>
                       updateIngredient(index, 'quantity', e.target.value)
                     }
@@ -193,23 +181,14 @@ export default function IngredientSelector({
 
                 {/* Unit */}
                 <div className="w-24">
-                  <Select
+                  <Input
                     value={ingredient.unit}
-                    onValueChange={(value) =>
-                      updateIngredient(index, 'unit', value)
+                    onChange={(e) =>
+                      updateIngredient(index, 'unit', e.target.value)
                     }
-                  >
-                    <SelectTrigger className="h-8 text-sm">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {UNIT_OPTIONS.map((unit) => (
-                        <SelectItem key={unit} value={unit}>
-                          {unit}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    placeholder={ingredient.unit}
+                    className="h-8 text-sm"
+                  />
                 </div>
 
                 {/* Remove Button */}
