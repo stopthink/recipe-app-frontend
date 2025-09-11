@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import type { Recipe } from '@/lib/types/recipes';
 import {
   Card,
@@ -58,13 +57,16 @@ export default async function Recipe({ id }: { id: number }) {
         <CardFooter className="flex-col gap-2">
           {recipe.recipeUrl && (
             <Button asChild variant="outline" className="w-full">
-              <Link href={recipe.recipeUrl}>View Recipe</Link>
+              <a href={recipe.recipeUrl.startsWith("http") ? recipe.recipeUrl : `https://${recipe.recipeUrl}`}
+                 target="_blank"
+                 rel="noopener noreferrer nofollow"
+              >View Recipe</a>
             </Button>
           )}
           <Button asChild className="w-full bg-red-400 hover:bg-red-300">
-            <Link href={`recipes/${recipe.id}`}>
+            <a href={`recipes/${recipe.id}`}>
               <ListChecks /> Send to Todoist
-            </Link>
+            </a>
           </Button>
         </CardFooter>
       </Card>
