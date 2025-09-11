@@ -58,6 +58,8 @@ export default async function Recipe({ id }: { id: number }) {
           {recipe.recipeUrl && (
             <Button asChild variant="outline" className="w-full">
               <a href={recipe.recipeUrl}
+                 target="_blank"
+                 rel="noopener noreferrer nofollow"
               >View Recipe</a>
             </Button>
           )}
