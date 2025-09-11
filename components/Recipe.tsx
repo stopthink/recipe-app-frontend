@@ -57,7 +57,7 @@ export default async function Recipe({ id }: { id: number }) {
         <CardFooter className="flex-col gap-2">
           {recipe.recipeUrl && (
             <Button asChild variant="outline" className="w-full">
-              <a href={recipe.recipeUrl}
+              <a href={recipe.recipeUrl.startsWith("http") ? recipe.recipeUrl : `https://${recipe.recipeUrl}`}
                  target="_blank"
                  rel="noopener noreferrer nofollow"
               >View Recipe</a>
