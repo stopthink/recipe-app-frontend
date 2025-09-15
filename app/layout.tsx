@@ -5,6 +5,7 @@ import './globals.css';
 import { AuthButton } from '@/components/auth/auth-button';
 import { ThemeSwitcher } from '@/components/auth/theme-switcher';
 import { ThemeProvider } from 'next-themes';
+import { AuthProvider } from '@/context/AuthContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,23 +32,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider attribute="class">
-          <div className="min-h-screen bg-background">
-            <header className="border-b">
-              <div className="flex container justify-between mx-auto px-4 py-4">
-                <h1 className="text-2xl font-bold">
-                  <Link href="/">Recipe App</Link>
-                </h1>
-                <div className="flex gap-3">
-                  <ThemeSwitcher />
-                  <AuthButton />
+        <AuthProvider>
+          <ThemeProvider attribute="class">
+            <div className="min-h-screen bg-background">
+              <header className="border-b">
+                <div className="flex container justify-between mx-auto px-4 py-4">
+                  <h1 className="text-2xl font-bold">
+                    <Link href="/">Recipe App</Link>
+                  </h1>
+                  <div className="flex gap-3">
+                    <ThemeSwitcher />
+                    <AuthButton />
+                  </div>
                 </div>
-              </div>
-            </header>
+              </header>
 
-            <main className="container mx-auto px-4 py-8">{children}</main>
-          </div>
-        </ThemeProvider>
+              <main className="container mx-auto px-4 py-8">{children}</main>
+            </div>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,3 +1,5 @@
+import { User } from '@supabase/supabase-js';
+
 // Custom error class for OAuth-related errors
 export class OAuthError extends Error {
   constructor(
@@ -30,3 +32,16 @@ export function getErrorMessage(error: unknown): string {
   }
   return 'An unexpected error occurred';
 }
+
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
+  signInWithTodoist: () => Promise<void>;
+  clearError: () => void;
+}
+
