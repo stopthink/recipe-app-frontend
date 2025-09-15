@@ -15,6 +15,8 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { getTodoistAuthUrl } from '@/lib/auth/todoist';
+import { Separator } from '@/components/ui/separator';
 
 export function LoginForm({
   className,
@@ -38,7 +40,6 @@ export function LoginForm({
         password,
       });
       if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
       router.push('/');
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'An error occurred');
@@ -57,8 +58,16 @@ export function LoginForm({
       },
     });
     if (error) {
-      console.error('Error signing in with Google:', error);
+      setError('Failed to sign in with Google');
     }
+  };
+
+  const signInWithTodoist = (e: React.FormEvent) => {
+    e.preventDefault();
+    const state = crypto.randomUUID();
+    sessionStorage.setItem('todoist_oauth_state', state);
+
+    window.location.href = getTodoistAuthUrl(state);
   };
 
   return (
@@ -110,9 +119,13 @@ export function LoginForm({
               >
                 {isLoading ? 'Logging in...' : 'Login'}
               </Button>
+              <Separator />
+              <Button onClick={signInWithTodoist} variant="outline" size="sm">
+                Sign in with Todoist
+              </Button>
               <Button onClick={signInWithGoogle} variant="outline" size="sm">
                 Sign in with Google
-              </Button>{' '}
+              </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{' '}
