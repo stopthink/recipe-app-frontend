@@ -2,8 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { Button } from '@/components/ui/button';
-import { CirclePlus } from 'lucide-react';
+import { AuthButton } from '@/components/auth/auth-button';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -36,12 +35,7 @@ export default function RootLayout({
               <h1 className="text-2xl font-bold">
                 <Link href="/">Recipe App</Link>
               </h1>
-              <Button asChild>
-                <Link href="/recipes/new">
-                  <CirclePlus />
-                  Add Recipe
-                </Link>
-              </Button>
+              <AuthButton />
             </div>
           </header>
 
