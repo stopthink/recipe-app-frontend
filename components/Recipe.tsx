@@ -47,7 +47,7 @@ export default async function Recipe({ id }: { id: number }) {
                 <span>
                   <Checkbox /> {ingredient.name}{' '}
                 </span>
-                <Badge className="bg-stone-200 text-stone-900">
+                <Badge className="bg-stone-200 text-stone-900 dark:bg-stone-700 dark:text-stone-100">
                   {ingredient.quantity} {ingredient.unit}
                 </Badge>
               </li>
@@ -57,10 +57,17 @@ export default async function Recipe({ id }: { id: number }) {
         <CardFooter className="flex-col gap-2">
           {recipe.recipeUrl && (
             <Button asChild variant="outline" className="w-full">
-              <a href={recipe.recipeUrl.startsWith("http") ? recipe.recipeUrl : `https://${recipe.recipeUrl}`}
-                 target="_blank"
-                 rel="noopener noreferrer nofollow"
-              >View Recipe</a>
+              <a
+                href={
+                  recipe.recipeUrl.startsWith('http')
+                    ? recipe.recipeUrl
+                    : `https://${recipe.recipeUrl}`
+                }
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+              >
+                View Recipe
+              </a>
             </Button>
           )}
           <Button asChild className="w-full bg-red-400 hover:bg-red-300">

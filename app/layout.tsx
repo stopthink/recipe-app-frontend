@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { AuthButton } from '@/components/auth/auth-button';
+import { ThemeSwitcher } from '@/components/auth/theme-switcher';
+import { ThemeProvider } from 'next-themes';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,22 +27,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="min-h-screen bg-background">
-          <header className="border-b">
-            <div className="flex container justify-between mx-auto px-4 py-4">
-              <h1 className="text-2xl font-bold">
-                <Link href="/">Recipe App</Link>
-              </h1>
-              <AuthButton />
-            </div>
-          </header>
+        <ThemeProvider attribute="class">
+          <div className="min-h-screen bg-background">
+            <header className="border-b">
+              <div className="flex container justify-between mx-auto px-4 py-4">
+                <h1 className="text-2xl font-bold">
+                  <Link href="/">Recipe App</Link>
+                </h1>
+                <div className="flex gap-3">
+                  <ThemeSwitcher />
+                  <AuthButton />
+                </div>
+              </div>
+            </header>
 
-          <main className="container mx-auto px-4 py-8">{children}</main>
-        </div>
+            <main className="container mx-auto px-4 py-8">{children}</main>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
