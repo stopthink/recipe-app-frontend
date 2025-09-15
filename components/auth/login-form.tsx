@@ -1,74 +1,64 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { createClient } from '@/lib/supabase/client';
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { getTodoistAuthUrl } from '@/lib/auth/todoist';
 import { Separator } from '@/components/ui/separator';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) {
+  const {
+    user,
+    login,
+    signUp,
+    signInWithGoogle,
+    signInWithTodoist,
+    logout,
+    loading,
+    error,
+    clearError,
+  } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
-    setIsLoading(true);
-    setError(null);
+    if (email && password) {
+      if (isSignUp) {
+        await signUp(email, password);
+      } else {
+        await login(email, password);
+      }
+    }
+  };
 
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
+  // Redirect when user logs in
+  useEffect(() => {
+    if (user && !loading) {
       router.push('/');
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [user, loading, router]);
 
-  const signInWithGoogle = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-    if (error) {
-      setError('Failed to sign in with Google');
-    }
-  };
-
-  const signInWithTodoist = (e: React.FormEvent) => {
-    e.preventDefault();
-    const state = crypto.randomUUID();
-    sessionStorage.setItem('todoist_oauth_state', state);
-
-    window.location.href = getTodoistAuthUrl(state);
-  };
+  // Don't render form if user is logged in
+  if (user) {
+    return <div></div>;
+  }
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
@@ -80,7 +70,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleEmailAuth}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -115,9 +105,9 @@ export function LoginForm({
               <Button
                 type="submit"
                 className="w-full cursor-pointer"
-                disabled={isLoading}
+                disabled={loading}
               >
-                {isLoading ? 'Logging in...' : 'Login'}
+                {loading ? 'Logging in...' : 'Login'}
               </Button>
               <Separator />
               <Button onClick={signInWithTodoist} variant="outline" size="sm">
@@ -128,7 +118,7 @@ export function LoginForm({
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{' '}
+              Don't have an account?{' '}
               <Link
                 href="/auth/sign-up"
                 className="underline underline-offset-4"
