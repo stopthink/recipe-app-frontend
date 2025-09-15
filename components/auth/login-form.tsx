@@ -47,6 +47,20 @@ export function LoginForm({
     }
   };
 
+  const signInWithGoogle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+    if (error) {
+      console.error('Error signing in with Google:', error);
+    }
+  };
+
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
@@ -96,6 +110,9 @@ export function LoginForm({
               >
                 {isLoading ? 'Logging in...' : 'Login'}
               </Button>
+              <Button onClick={signInWithGoogle} variant="outline" size="sm">
+                Sign in with Google
+              </Button>{' '}
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{' '}
