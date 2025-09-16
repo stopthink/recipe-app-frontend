@@ -16,6 +16,7 @@ import {
   CardContent,
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { Loader } from 'lucide-react';
 
 export function LoginForm({
   className,
@@ -39,6 +40,8 @@ export function LoginForm({
       router.push('/');
     }
   }, [user, loading, router]);
+
+  if (user) return; // don't render form if logged in
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
@@ -87,14 +90,42 @@ export function LoginForm({
                 className="w-full cursor-pointer"
                 disabled={loading}
               >
-                {loading ? 'Signing in...' : 'Sign In'}
+                {loading ? (
+                  <>
+                    <Loader className="animate-spin" /> Signing in...
+                  </>
+                ) : (
+                  'Sign In'
+                )}
               </Button>
               <Separator />
-              <Button onClick={signInWithTodoist} variant="outline" size="sm">
-                {loading ? 'Signing in...' : 'Sign in with Todoist'}
+              <Button
+                onClick={signInWithTodoist}
+                disabled={loading}
+                variant="outline"
+                size="sm"
+              >
+                {loading ? (
+                  <>
+                    <Loader className="animate-spin" /> Signing in...
+                  </>
+                ) : (
+                  'Sign in with Todoist'
+                )}
               </Button>
-              <Button onClick={signInWithGoogle} variant="outline" size="sm">
-                {loading ? 'Signing in...' : 'Sign in with Google'}
+              <Button
+                onClick={signInWithGoogle}
+                disabled={loading}
+                variant="outline"
+                size="sm"
+              >
+                {loading ? (
+                  <>
+                    <Loader className="animate-spin" /> Signing in...
+                  </>
+                ) : (
+                  'Sign in with Google'
+                )}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
