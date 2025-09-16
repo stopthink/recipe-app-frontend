@@ -21,50 +21,32 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) {
-  const {
-    user,
-    login,
-    signUp,
-    signInWithGoogle,
-    signInWithTodoist,
-    loading,
-    error,
-  } = useAuth();
+  const { user, login, signInWithGoogle, signInWithTodoist, loading, error } =
+    useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignUp] = useState(false);
   const router = useRouter();
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email && password) {
-      if (isSignUp) {
-        await signUp(email, password);
-      } else {
-        await login(email, password);
-      }
+      await login(email, password);
     }
   };
 
-  // Redirect when user logs in
   useEffect(() => {
     if (user && !loading) {
       router.push('/');
     }
   }, [user, loading, router]);
 
-  // Don't render form if user is logged in
-  if (user) {
-    return;
-  }
-
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Sign In</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your email below to sign in to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -105,14 +87,14 @@ export function LoginForm({
                 className="w-full cursor-pointer"
                 disabled={loading}
               >
-                {loading ? 'Logging in...' : 'Login'}
+                {loading ? 'Signing in...' : 'Sign In'}
               </Button>
               <Separator />
               <Button onClick={signInWithTodoist} variant="outline" size="sm">
-                Sign in with Todoist
+                {loading ? 'Signing in...' : 'Sign in with Todoist'}
               </Button>
               <Button onClick={signInWithGoogle} variant="outline" size="sm">
-                Sign in with Google
+                {loading ? 'Signing in...' : 'Sign in with Google'}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
