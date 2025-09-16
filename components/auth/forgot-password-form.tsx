@@ -1,7 +1,6 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -14,33 +13,23 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) {
   const [email, setEmail] = useState('');
-  const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { forgotPassword, loading, error } = useAuth();
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // The url which will be included in the email. This URL needs to be configured in your redirect URLs in the Supabase dashboard at https://supabase.com/dashboard/project/_/auth/url-configuration
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/update-password`,
-      });
-      if (error) throw error;
-      setSuccess(true);
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
+    if (email) {
+      await forgotPassword(email);
+      if (!error) {
+        setSuccess(true);
+      }
     }
   };
 
@@ -64,7 +53,7 @@ export function ForgotPasswordForm({
           <CardHeader>
             <CardTitle className="text-2xl">Reset Your Password</CardTitle>
             <CardDescription>
-              Type in your email and we&apos;ll send you a link to reset your
+              Type in your email and we'll send you a link to reset your
               password
             </CardDescription>
           </CardHeader>
@@ -86,9 +75,9 @@ export function ForgotPasswordForm({
                 <Button
                   type="submit"
                   className="w-full cursor-pointer"
-                  disabled={isLoading}
+                  disabled={loading}
                 >
-                  {isLoading ? 'Sending...' : 'Send reset email'}
+                  {loading ? 'Sending...' : 'Send reset email'}
                 </Button>
               </div>
               <div className="mt-4 text-center text-sm">
