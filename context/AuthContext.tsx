@@ -87,7 +87,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signInWithGoogle = async (): Promise<void> => {
+  const signInWithGoogle = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
     try {
       setLoading(true);
       setError(null);
@@ -106,7 +107,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signInWithTodoist = async (): Promise<void> => {
+  const signInWithTodoist = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
     try {
       setLoading(true);
       setError(null);

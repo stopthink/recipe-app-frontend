@@ -27,14 +27,12 @@ export function LoginForm({
     signUp,
     signInWithGoogle,
     signInWithTodoist,
-    logout,
     loading,
     error,
-    clearError,
   } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp] = useState(false);
   const router = useRouter();
 
   const handleEmailAuth = async (e: React.FormEvent) => {
@@ -57,7 +55,7 @@ export function LoginForm({
 
   // Don't render form if user is logged in
   if (user) {
-    return <div></div>;
+    return;
   }
 
   return (

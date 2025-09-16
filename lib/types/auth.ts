@@ -40,8 +40,7 @@ export interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
-  signInWithTodoist: () => Promise<void>;
+  signInWithGoogle: (e: React.FormEvent) => Promise<void>;
+  signInWithTodoist: (e: React.FormEvent) => Promise<void>;
   clearError: () => void;
 }
-
