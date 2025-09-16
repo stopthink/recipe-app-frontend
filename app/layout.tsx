@@ -5,6 +5,7 @@ import './globals.css';
 import { AuthButton } from '@/components/auth/auth-button';
 import { ThemeProvider } from 'next-themes';
 import { AuthProvider } from '@/context/AuthContext';
+import { CookingPot } from 'lucide-react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,7 +38,10 @@ export default function RootLayout({
               <header className="border-b">
                 <div className="flex container justify-between mx-auto px-4 py-4">
                   <h1 className="text-2xl font-bold">
-                    <Link href="/">Recipe App</Link>
+                    <Link href="/" className="flex gap-1">
+                      <CookingPot className="fill-orange-600" />
+                      Recura
+                    </Link>
                   </h1>
                   <div className="flex gap-3">
                     <AuthButton />
