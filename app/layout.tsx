@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { AuthButton } from '@/components/auth/auth-button';
-import { ThemeSwitcher } from '@/components/auth/theme-switcher';
 import { ThemeProvider } from 'next-themes';
 import { AuthProvider } from '@/context/AuthContext';
 
@@ -41,7 +40,6 @@ export default function RootLayout({
                     <Link href="/">Recipe App</Link>
                   </h1>
                   <div className="flex gap-3">
-                    <ThemeSwitcher />
                     <AuthButton />
                   </div>
                 </div>

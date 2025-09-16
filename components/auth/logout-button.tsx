@@ -14,7 +14,7 @@ export function LogoutButton() {
   };
 
   return (
-    <Button onClick={logout} className="cursor-pointer">
+    <Button onClick={logout} className="w-full cursor-pointer">
       Logout
     </Button>
   );
