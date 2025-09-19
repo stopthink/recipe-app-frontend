@@ -126,16 +126,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const forgotPassword = async (email: string): Promise<void> => {
+  const forgotPassword = async (email: string): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/update-password`,
       });
-      if (error) throw error;
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
+
+      if (error) {
+        setError(error.message);
+        return false;
+      }
+      return true;
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'An error occurred';
+      setError(message);
+      return false;
     } finally {
       setLoading(false);
     }

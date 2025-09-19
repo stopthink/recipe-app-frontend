@@ -26,8 +26,8 @@ export function ForgotPasswordForm({
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      await forgotPassword(email);
-      if (!error) {
+      const found_email = await forgotPassword(email);
+      if (found_email) {
         setSuccess(true);
       }
     }
