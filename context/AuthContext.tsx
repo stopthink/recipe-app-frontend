@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const supabase = createClient();
 
   // Add method stubs for now
-  const login = async (email: string, password: string): Promise<void> => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
@@ -32,9 +32,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        setError(error.message);
+        return false;
+      }
+      return true;
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Login failed');
+      const message = error instanceof Error ? error.message : 'Login failed';
+      setError(message);
+      return false;
     } finally {
       setLoading(false);
     }
