@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 
 export function ForgotPasswordForm({
@@ -21,7 +21,11 @@ export function ForgotPasswordForm({
 }: React.ComponentPropsWithoutRef<'div'>) {
   const [email, setEmail] = useState('');
   const [success, setSuccess] = useState(false);
-  const { forgotPassword, loading, error } = useAuth();
+  const { forgotPassword, loading, error, clearError } = useAuth();
+
+  useEffect(() => {
+    clearError();
+  }, []);
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
