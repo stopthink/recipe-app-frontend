@@ -27,19 +27,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setLoading(true);
       setError(null);
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) {
-        console.error('Supabase login error:', error);
-        throw error;
-      }
-
-      console.log('Login successful:', data);
+      if (error) throw error;
     } catch (error) {
-      console.error('Login failed:', error);
       setError(error instanceof Error ? error.message : 'Login failed');
     } finally {
       setLoading(false);
