@@ -30,7 +30,7 @@ export default function Page() {
                 <AlertTitle>Don't see an email?</AlertTitle>
                 <AlertDescription className="inline">
                   Check your spam folder, or{' '}
-                  <Link href="/auth/login/" className="link">
+                  <Link href="/login/" className="link">
                     try logging in.
                   </Link>
                 </AlertDescription>

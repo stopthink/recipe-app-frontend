@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   const state = searchParams.get('state');
 
   if (!code) {
-    return NextResponse.redirect(`${origin}/auth/error`);
+    return NextResponse.redirect(`${origin}/error`);
   }
 
   try {
@@ -30,6 +30,6 @@ export async function GET(request: Request) {
 
     return NextResponse.redirect(`${origin}/`);
   } catch (error) {
-    return NextResponse.redirect(`${origin}/auth/error`);
+    return NextResponse.redirect(`${origin}/error`);
   }
 }

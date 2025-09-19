@@ -13,7 +13,7 @@ export async function GET(request: Request) {
 
   // Validate we have the authorization code
   if (!code) {
-    return NextResponse.redirect(`${origin}/auth/error?message=missing_code`);
+    return NextResponse.redirect(`${origin}/error?message=missing_code`);
   }
 
   try {
@@ -21,14 +21,24 @@ export async function GET(request: Request) {
     const tokenResponse: TodoistTokenResponse = await exchangeTodoistCode(code);
 
     if (!tokenResponse.access_token) {
-      throw new OAuthError('No access token received from Todoist', 'todoist', 'token_exchange');
+      throw new OAuthError(
+        'No access token received from Todoist',
+        'todoist',
+        'token_exchange'
+      );
     }
 
     // Step 2: Get user info from Todoist API
-    const todoistUser: TodoistUser = await getTodoistUser(tokenResponse.access_token);
+    const todoistUser: TodoistUser = await getTodoistUser(
+      tokenResponse.access_token
+    );
 
     if (!todoistUser.email) {
-      throw new OAuthError('No email found in Todoist user data', 'todoist', 'user_fetch');
+      throw new OAuthError(
+        'No email found in Todoist user data',
+        'todoist',
+        'user_fetch'
+      );
     }
 
     // Step 3: Use admin client to check if user exists
@@ -54,7 +64,6 @@ export async function GET(request: Request) {
     let supabaseUser: User;
 
     if (existingUser) {
-
       // Update existing user's metadata with latest Todoist info
       const { data: updatedUser, error: updateError } =
         await adminSupabase.auth.admin.updateUserById(existingUser.id, {
@@ -80,7 +89,6 @@ export async function GET(request: Request) {
 
       supabaseUser = updatedUser.user;
     } else {
-
       // Step 4: Create new user without password using admin client
       const { data: newUserData, error: createError } =
         await adminSupabase.auth.admin.createUser({
@@ -154,7 +162,7 @@ export async function GET(request: Request) {
     // Provide user-friendly error messages
     const errorMessage = getErrorMessage(error);
     return NextResponse.redirect(
-      `${origin}/auth/error?message=${encodeURIComponent(errorMessage)}`
+      `${origin}/error?message=${encodeURIComponent(errorMessage)}`
     );
   }
 }

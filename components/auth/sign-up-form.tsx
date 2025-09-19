@@ -36,7 +36,7 @@ export function SignUpForm({
 
     const success = await signUp(email, password, repeatPassword);
     if (success) {
-      router.push('/auth/sign-up-success');
+      router.push('/sign-up-success');
       return;
     }
   };
@@ -103,7 +103,7 @@ export function SignUpForm({
             </div>
             <div className="mt-4 text-center text-sm">
               Already have an account?{' '}
-              <Link href="/auth/login" className="underline underline-offset-4">
+              <Link href="/login" className="underline underline-offset-4">
                 Login
               </Link>
             </div>
