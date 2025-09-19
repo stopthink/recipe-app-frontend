@@ -149,6 +149,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updatePassword = async (password: string): Promise<boolean> => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { error } = await supabase.auth.updateUser({ password });
+
+      if (error) {
+        setError(error.message);
+        return false;
+      }
+      return true;
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'An error occurred';
+      setError(message);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const clearError = (): void => {
     setError(null);
   };
@@ -184,6 +205,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signInWithGoogle,
     signInWithTodoist,
     forgotPassword,
+    updatePassword,
     clearError,
   };
 

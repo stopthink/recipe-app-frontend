@@ -1,7 +1,6 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -13,32 +12,30 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { Loader } from 'lucide-react';
 
 export function UpdatePasswordForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) {
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { updatePassword, error, loading, clearError } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    clearError();
+  }, []);
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const { error } = await supabase.auth.updateUser({ password });
-      if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
-      router.push('/');
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
+    if (password) {
+      const success = await updatePassword(password);
+      if (success) {
+        router.push('/');
+        return;
+      }
     }
   };
 
@@ -69,9 +66,15 @@ export function UpdatePasswordForm({
               <Button
                 type="submit"
                 className="w-full cursor-pointer"
-                disabled={isLoading}
+                disabled={loading}
               >
-                {isLoading ? 'Saving...' : 'Save new password'}
+                {loading ? (
+                  <>
+                    <Loader className="animate-spin" /> Saving new password...
+                  </>
+                ) : (
+                  'Save new password'
+                )}
               </Button>
             </div>
           </form>
