@@ -46,14 +46,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const logout = async (): Promise<void> => {
+  const logout = async (): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        setError(error.message);
+        return false;
+      }
+      return true;
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'Logout failed');
+      const message = error instanceof Error ? error.message : 'Login failed';
+      setError(message);
+      return false;
     } finally {
       setLoading(false);
     }
