@@ -53,29 +53,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signUp = async (email: string, password: string): Promise<void> => {
+  const signUp = async (
+    email: string,
+    password: string,
+    repeatPassword: string
+  ): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
+
+      if (password !== repeatPassword) {
+        setError('Passwords must match');
+        return false;
+      }
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/protected`,
+        },
       });
 
       if (error) {
-        console.error('Supabase signup error:', error);
-        throw error;
+        setError(error.message);
+        return false;
       }
 
-      console.log('Signup successful:', data);
-
-      // Check if email confirmation is required
-      if (data.user && !data.session) {
-        setError('Check your email for a confirmation link before signing in.');
-      }
+      return true;
     } catch (error) {
-      console.error('Signup failed:', error);
-      setError(error instanceof Error ? error.message : 'Sign up failed');
+      const message = error instanceof Error ? error.message : 'Sign up failed';
+      setError(message);
+      return false;
     } finally {
       setLoading(false);
     }

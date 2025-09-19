@@ -39,7 +39,11 @@ export interface AuthContextType {
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (
+    email: string,
+    password: string,
+    repeatPassword: string
+  ) => Promise<boolean>;
   signInWithGoogle: (e: React.FormEvent) => Promise<void>;
   signInWithTodoist: (e: React.FormEvent) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
