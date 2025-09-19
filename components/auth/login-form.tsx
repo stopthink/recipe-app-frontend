@@ -22,11 +22,22 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) {
-  const { user, login, signInWithGoogle, signInWithTodoist, loading, error } =
-    useAuth();
+  const {
+    user,
+    login,
+    signInWithGoogle,
+    signInWithTodoist,
+    loading,
+    error,
+    clearError,
+  } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    clearError();
+  }, []);
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
