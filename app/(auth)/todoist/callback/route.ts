@@ -9,7 +9,6 @@ import { OAuthError, getErrorMessage } from '@/lib/types/auth';
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
-  const state = searchParams.get('state');
 
   // Validate we have the authorization code
   if (!code) {
@@ -139,11 +138,10 @@ export async function GET(request: Request) {
     }
 
     // Now sign them in with the temporary password
-    const { data: sessionData, error: sessionError } =
-      await supabase.auth.signInWithPassword({
-        email: supabaseUser.email!,
-        password: tempPassword,
-      });
+    const { error: sessionError } = await supabase.auth.signInWithPassword({
+      email: supabaseUser.email!,
+      password: tempPassword,
+    });
 
     if (sessionError) {
       throw new OAuthError(

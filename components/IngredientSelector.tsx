@@ -31,7 +31,7 @@ export default function IngredientSelector({
   const [ingredients, setIngredients] = useState<CreateIngredient[]>([]);
 
   const addIngredient = (ingredient: Ingredient | string) => {
-    let newIngredient: CreateIngredient = {
+    const newIngredient: CreateIngredient = {
       name: '',
       quantity: 1,
       unit: '',

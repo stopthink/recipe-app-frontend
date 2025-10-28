@@ -5,7 +5,6 @@ import { exchangeTodoistCode } from '@/lib/auth/todoist';
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
-  const state = searchParams.get('state');
 
   if (!code) {
     return NextResponse.redirect(`${origin}/error`);
@@ -23,13 +22,13 @@ export async function GET(request: Request) {
 
     // Create user in Supabase
     const supabase = await createClient();
-    const { error } = await supabase.auth.signInWithPassword({
+    const {} = await supabase.auth.signInWithPassword({
       email: todoistUser.email,
       password: 'todoist_oauth', // You'll need a better strategy here
     });
 
     return NextResponse.redirect(`${origin}/`);
-  } catch (error) {
+  } catch {
     return NextResponse.redirect(`${origin}/error`);
   }
 }
