@@ -26,7 +26,7 @@ export function UpdatePasswordForm({
 
   useEffect(() => {
     clearError();
-  }, []);
+  }, [clearError]);
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();

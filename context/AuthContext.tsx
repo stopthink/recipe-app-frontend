@@ -2,7 +2,13 @@
 
 import { createClient } from '@/lib/supabase/client';
 import type { User } from '@supabase/supabase-js';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useCallback,
+  useState,
+} from 'react';
 import type { AuthContextType } from '@/lib/types/auth';
 import { getTodoistAuthUrl } from '@/lib/auth/todoist';
 
@@ -78,7 +84,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setError('Passwords must match');
         return false;
       }
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -182,9 +188,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const clearError = (): void => {
+  const clearError = useCallback((): void => {
     setError(null);
-  };
+  }, []);
 
   useEffect(() => {
     const getUser = async () => {

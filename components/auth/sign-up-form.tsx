@@ -29,7 +29,7 @@ export function SignUpForm({
 
   useEffect(() => {
     clearError();
-  }, []);
+  }, [clearError]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();

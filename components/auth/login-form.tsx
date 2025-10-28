@@ -37,7 +37,7 @@ export function LoginForm({
 
   useEffect(() => {
     clearError();
-  }, []);
+  }, [clearError]);
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
